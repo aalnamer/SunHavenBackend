@@ -14,12 +14,11 @@ const router = express.Router();
 // getting cart
 
 router.get(
-  "/:username/:id",
+  "/:username",
   ensureCorrectUserOrAdmin,
   async function (req, res, next) {
     try {
-      console.log(req.params.id);
-      const products = await Cart.get(req.params.id);
+      const products = await Cart.get(req.params.username);
       return res.json({ products });
     } catch (err) {
       return next(err);
@@ -30,21 +29,17 @@ router.get(
 // adding item to cart
 
 router.post(
-  "/:username/:id",
+  "/:username",
   ensureCorrectUserOrAdmin,
   async function (req, res, next) {
     try {
+      const username = req.params.username;
       const quantity = req.body.quantity;
       const size = req.body.size;
       const color = req.body.color;
-      const productId = +req.params.id;
-      await Product.addToCart(
-        req.params.username,
-        productId,
-        quantity,
-        size,
-        color
-      );
+      const productId = req.body.productId;
+
+      await Cart.addToCart(username, productId, quantity, size, color);
       return res.json({ added: productId });
     } catch (err) {
       return next(err);
@@ -72,11 +67,11 @@ router.patch(
 // deleting an item from the cart
 
 router.delete(
-  "/:username/:id",
+  "/:username",
   ensureCorrectUserOrAdmin,
   async function (req, res, next) {
     try {
-      const cartId = req.params.id;
+      const cartId = req.body;
       await Cart.removeFromCart(cartId);
       return res.json({ message: "Item removed from cart" });
     } catch (err) {

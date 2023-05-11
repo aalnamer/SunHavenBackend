@@ -23,6 +23,27 @@ WHERE id = $1`,
 
     return product;
   }
+  static async getCategory(category) {
+    const productRes = await db.query(
+      `SELECT id,
+      title,
+      description,
+      img_url AS "imgUrl",
+      color,
+      size,
+      price,
+      category
+FROM products
+WHERE category ILIKE $1`,
+      [category]
+    );
+    console.log(productRes.rows);
+    const product = productRes.rows[0];
+
+    if (!product) throw new NotFoundError(`No product: ${id}`);
+
+    return product;
+  }
   static async getAll() {
     const productRes = await db.query(
       `SELECT *

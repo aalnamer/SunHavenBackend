@@ -3,16 +3,16 @@ const { BadRequestError, NotFoundError } = require("../expressError");
 const { sqlForPartialUpdate } = require("../helpers/sql");
 
 class Cart {
-  static async get(id) {
+  static async get(username) {
     const cartRes = await db.query(
       `SELECT c.id AS cart_id, c.quantity, c.size, c.color,
-                  p.id AS product_id, p.title, p.img_url, p.description, p.color AS product_color, p.size AS product_size, p.price,
-                  u.id AS user_id, u.username, u.first_name, u.last_name, u.email, u.is_admin
-           FROM cart AS c
-           JOIN products AS p ON c.product_id = p.id
-           JOIN users AS u ON c.user_id = u.id
-           WHERE c.user_id = $1`,
-      [id]
+              p.id AS product_id, p.title, p.img_url, p.description, p.color AS product_color, p.size AS product_size, p.price,
+              u.id AS user_id, u.username, u.first_name, u.last_name, u.email, u.is_admin
+       FROM cart AS c
+       JOIN products AS p ON c.product_id = p.id
+       JOIN users AS u ON c.user_id = u.id
+       WHERE u.username = $1`,
+      [username]
     );
     const cart = cartRes.rows;
 
@@ -52,10 +52,10 @@ class Cart {
       [user.id, productId, quantity, size, color]
     );
   }
-  static async removeFromCart(cartId) {
+  static async removeFromCart({ cartId }) {
     await db.query(
       `DELETE FROM cart
-        WHERE id = $1`,
+      WHERE id = $1`,
       [cartId]
     );
   }

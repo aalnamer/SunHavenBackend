@@ -11,6 +11,7 @@ const usersRoutes = require("./routes/users");
 const productRoutes = require("./routes/products");
 const cartRoutes = require("./routes/cart");
 const wishlistRoutes = require("./routes/wishlist");
+const categoryRoutes = require("./routes/category");
 
 const morgan = require("morgan");
 
@@ -26,6 +27,7 @@ app.use("/products", productRoutes);
 app.use("/users", usersRoutes);
 app.use("/cart", cartRoutes);
 app.use("/wishlist", wishlistRoutes);
+app.use("/category", categoryRoutes);
 
 /** Handle 404 errors -- this matches everything */
 app.use(function (req, res, next) {

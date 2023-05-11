@@ -125,12 +125,12 @@ class User {
   static async get(username) {
     const userRes = await db.query(
       `SELECT username,
-                  first_name AS "firstName",
-                  last_name AS "lastName",
-                  email,
-                  is_admin AS "isAdmin"
-           FROM users
-           WHERE username = $1`,
+              first_name AS "firstName",
+              last_name AS "lastName",
+              email,
+              is_admin AS "isAdmin"
+       FROM users
+       WHERE username = $1`,
       [username]
     );
 
@@ -140,14 +140,16 @@ class User {
 
     const userCartRes = await db.query(
       `SELECT c.product_id, c.quantity, p.title, p.img_url, p.price, p.color, p.size
-     FROM cart AS c
-     JOIN products AS p ON c.product_id = p.id
-     WHERE c.username = $1`,
+       FROM cart AS c
+       JOIN products AS p ON c.product_id = p.id
+       JOIN users AS u ON c.user_id = u.id
+       WHERE u.username = $1`,
       [username]
     );
 
-    user.cart = userCartRes.rows;
-    return user;
+    const cartProducts = userCartRes.rows;
+
+    return { user, cartProducts };
   }
 
   /** Update user data with `data`.
