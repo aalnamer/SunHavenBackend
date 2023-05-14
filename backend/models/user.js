@@ -149,7 +149,20 @@ class User {
 
     const cartProducts = userCartRes.rows;
 
-    return { user, cartProducts };
+    const userOrdersRes = await db.query(
+      `SELECT o.id, o.product_id, o.quantity, o.size, o.color, o.order_date,
+              p.title, p.img_url, p.price
+       FROM orders AS o
+       JOIN users AS u ON o.user_id = u.id
+       JOIN products AS p ON o.product_id = p.id
+       WHERE u.username = $1
+       ORDER BY o.order_date DESC`,
+      [username]
+    );
+
+    const orders = userOrdersRes.rows;
+
+    return { user, cartProducts, orders };
   }
 
   /** Update user data with `data`.

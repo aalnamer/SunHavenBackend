@@ -31,12 +31,15 @@ router.post(
   ensureCorrectUserOrAdmin,
   async function (req, res, next) {
     try {
-      const itemId = req.body;
+      const { itemId } = req.body;
+
       const user = req.params.username;
       await Wishlist.addItem(user, itemId);
-      return res.status(201).json({ message: "Item added to wishlist" });
+      return res
+        .status(201)
+        .json({ message: `Item with ID: ${itemId}added to wishlist` });
     } catch (err) {
-      return next(er);
+      return next(err);
     }
   }
 );
@@ -46,12 +49,15 @@ router.delete(
   ensureCorrectUserOrAdmin,
   async function (req, res, next) {
     try {
-      const itemId = req.body;
-      const user = req.params.username;
-      await Wishlist.removeItem(user, itemId);
-      return res.status(201).json({ message: "Item added to wishlist" });
+      const { wishlistId } = req.body;
+
+      const username = req.params.username;
+      await Wishlist.removeItem(username, wishlistId);
+      return res
+        .status(201)
+        .json({ message: `Item ${wishlistId} Removed From wishlist` });
     } catch (err) {
-      return next(er);
+      return next(err);
     }
   }
 );

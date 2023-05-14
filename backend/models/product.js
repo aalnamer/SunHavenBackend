@@ -37,7 +37,7 @@ FROM products
 WHERE category ILIKE $1`,
       [category]
     );
-    console.log(productRes.rows);
+
     const product = productRes.rows[0];
 
     if (!product) throw new NotFoundError(`No product: ${id}`);
