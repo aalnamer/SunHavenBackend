@@ -55,7 +55,7 @@ router.post(
 
 router.post("/order/:username", async (req, res, next) => {
   const { products } = req.body;
-  console.log(products);
+
   const { username } = req.params;
   try {
     for (const item of products) {

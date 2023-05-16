@@ -2,7 +2,7 @@
 
 const express = require("express");
 const cors = require("cors");
-const session = require("express-session");
+const session = require("cookie-session");
 const { NotFoundError } = require("./expressError");
 
 const { authenticateJWT } = require("./middleware/auth");
