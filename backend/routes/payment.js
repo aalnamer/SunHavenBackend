@@ -22,8 +22,8 @@ router.post(
 
       // Iterate over the items and add them to the cart
 
-      const successUrl = "http://localhost:3000/success";
-      const cancelUrl = "http://localhost:3000/cart";
+      const successUrl = "https://sun-haven.web.app/success";
+      const cancelUrl = "https://sun-haven.web.app/cart";
       const lineItems = items.map((item) => {
         return {
           price_data: {
