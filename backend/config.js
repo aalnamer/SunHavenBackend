@@ -1,7 +1,5 @@
 "use strict";
 
-const { PSQL_ACC } = require("./config-settings");
-
 /** Shared config for application; can be required many places. */
 
 require("dotenv").config();
@@ -14,7 +12,7 @@ const PORT = process.env.PORT || "8080";
 // Use dev database, testing database, or via env var, production database
 function getDatabaseUri() {
   return process.env.NODE_ENV === "test"
-    ? `postgresql://${PSQL_ACC}/sun_haven_test`
+    ? `postgresql:///sun_haven_test`
     : process.env.DATABASE_URL;
 }
 
